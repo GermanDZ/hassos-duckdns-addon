@@ -56,9 +56,11 @@ while true; do
     [[ ${IPV4} != *:/* ]] && ipv4=${IPV4} || ipv4=$(curl -s -m 10 "${IPV4}")
     [[ ${IPV6} != *:/* ]] && ipv6=${IPV6} || ipv6=$(curl -s -m 10 "${IPV6}")
 
-    echo "Updating #{DOMAINS} to ${ipv4}"
 
-    if answer="$(curl -s "https://www.duckdns.org/update?domains=${DOMAINS}&token=${TOKEN}&ip=${ipv4}&ipv6=${ipv6}&verbose=true")"; then
+    duck_domain="$(echo $DOMAINS | cut -d' ' -f1)"
+    echo "Updating '${duck_domain}' from '${DOMAINS}' to ${ipv4}"
+
+    if answer="$(curl -s "https://www.duckdns.org/update?domains=${duck_domain}&token=${TOKEN}&ip=${ipv4}&ipv6=${ipv6}&verbose=true")"; then
         bashio::log.info "${answer}"
     else
         bashio::log.warning "${answer}"
