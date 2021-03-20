@@ -14,3 +14,13 @@ Automatically update your Duck DNS IP address with integrated HTTPS support via 
 [armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
 [i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
 [duckdns]: https://duckdns.org
+
+## Development
+
+1. Make changes
+2. Publish changes
+3. Build the image
+
+```sh
+    docker run --rm --privileged -v ~/.docker:/root/.docker homeassistant/amd64-builder --all -t duckdns -r https://github.com/GermanDZ/addons -b main --docker-user ${DOCKER_HUB_USERNAME} --docker-password ${DOCKER_HUB_PASSWORD}
+```
