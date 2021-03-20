@@ -7,6 +7,6 @@
     "i386": "homeassistant/i386-base:3.10"
   },
   "args": {
-    "DEHYDRATED_VERSION": "0.6.5"
+    "DEHYDRATED_VERSION": "0.7.0"
   }
 }
