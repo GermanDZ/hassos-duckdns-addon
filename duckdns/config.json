@@ -3,7 +3,7 @@
   "version": "1.12.6",
   "slug": "duckdns",
   "description": "Free Dynamic DNS (DynDNS or DDNS) service with Let's Encrypt support",
-  "url": "https://github.com/home-assistant/hassio-addons/tree/master/duckdns",
+  "url": "https://github.com/GermanDZ/hassos-duckdns-addon/tree/main/duckdns",
   "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
   "startup": "services",
   "map": ["ssl:rw"],
@@ -33,5 +33,5 @@
     ],
     "seconds": "int"
   },
-  "image": "homeassistant/{arch}-addon-duckdns"
+  "image": "germandz/{arch}-addon-duckdns"
 }
