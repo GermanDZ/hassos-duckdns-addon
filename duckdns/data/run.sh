@@ -16,12 +16,23 @@ WAIT_TIME=$(bashio::config 'seconds')
 # Function that performe a renew
 function le_renew() {
     local domain_args=()
-    local domains
-  
+    local domains=''
+    local aliases=''
+
     domains=$(bashio::config 'domains')
 
     # Prepare domain for Let's Encrypt
     for domain in ${domains}; do
+        for alias in $(jq --raw-output --exit-status "[.aliases[]|{(.alias):.domain}]|add.\"${domain}\" | select(. != null)" /data/options.json) ; do
+            aliases="${aliases} ${alias}"
+        done
+    done
+
+    aliases="$(echo "${aliases}" | tr ' ' '\n' | sort | uniq)"
+
+    bashio::log.info "Renew certificate for domains: $(echo -n "${domains}") and aliases: $(echo -n "${aliases}")"
+
+    for domain in $(echo "${domains}" "${aliases}" | tr ' ' '\n' | sort | uniq); do
         domain_args+=("--domain" "${domain}")
     done
     
@@ -60,7 +71,7 @@ while true; do
     duck_domain="$(echo $DOMAINS | cut -d' ' -f1)"
     echo "Updating '${duck_domain}' from '${DOMAINS}' to ${ipv4}"
 
-    if answer="$(curl -s "https://www.duckdns.org/update?domains=${duck_domain}&token=${TOKEN}&ip=${ipv4}&ipv6=${ipv6}&verbose=true")"; then
+    if answer="$(curl -s "https://www.duckdns.org/update?domains=${duck_domain}&token=${TOKEN}&ip=${ipv4}&ipv6=${ipv6}&verbose=true")" && [ "${answer}" != 'KO' ]; then
         bashio::log.info "${answer}"
     else
         bashio::log.warning "${answer}"
